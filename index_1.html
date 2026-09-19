@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GEI — Global Economy Investment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold-500:#d4af37;
+    --gold-400:#e8c65a;
+    --gold-300:#f4dd8e;
+    --gold-100:#fff3c9;
+    --ink:#04050a;
+    --muted:#8f8b7e;
+    --line:rgba(212,175,55,.16);
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font);
+    background:var(--ink);
+    color:#e9e6dd;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(60vw 60vw at 78% -8%, rgba(212,175,55,.10), transparent 62%),
+      radial-gradient(50vw 50vw at 8% 12%, rgba(212,175,55,.055), transparent 60%),
+      radial-gradient(70vw 55vw at 50% 112%, rgba(168,128,31,.10), transparent 65%),
+      linear-gradient(180deg,#04050a 0%,#06070d 45%,#04050a 100%);
+  }
+  #stars{position:fixed;inset:0;z-index:0;width:100%;height:100%;display:block;pointer-events:none}
+  .page{position:relative;z-index:1}
+  .wrap{width:min(1180px,92vw);margin-inline:auto}
+
+  .gold-text{
+    background:linear-gradient(100deg,#7a5c15 0%,#c9a227 18%,#fff6c9 38%,#ffd75e 52%,#d4af37 66%,#8a6a1f 88%,#c9a227 100%);
+    background-size:220% auto;
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;-webkit-text-fill-color:transparent;
+    animation:shine 7s linear infinite;
+  }
+  @keyframes shine{0%{background-position:0% center}100%{background-position:220% center}}
+  .eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.42em;text-transform:uppercase;color:var(--gold-400)}
+
+  /* SPLASH */
+  #welcome{
+    position:fixed;inset:0;z-index:9999;
+    display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(70vw 60vw at 50% 40%, rgba(212,175,55,.10), transparent 62%),
+      radial-gradient(50vw 50vw at 15% 85%, rgba(168,128,31,.08), transparent 60%),
+      linear-gradient(180deg,#04050a 0%,#06070d 55%,#04050a 100%);
+    transition:opacity 1s ease, visibility 1s ease;
+  }
+  #welcome.hide{opacity:0;visibility:hidden;pointer-events:none}
+  .welcome-card{
+    position:relative;display:flex;flex-direction:column;align-items:center;
+    padding:52px 48px 44px;width:min(560px,90vw);text-align:center;z-index:2;
+  }
+  .welcome-halo{
+    position:absolute;top:52px;left:50%;
+    width:clamp(220px,40vw,320px);height:clamp(220px,40vw,320px);
+    transform:translateX(-50%);border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle, rgba(212,175,55,.22) 0%, rgba(212,175,55,.05) 45%, transparent 70%);
+    filter:blur(20px);animation:halo 4s ease-in-out infinite;
+  }
+  @keyframes halo{
+    0%,100%{transform:translateX(-50%) scale(1);opacity:.8}
+    50%{transform:translateX(-50%) scale(1.12);opacity:1}
+  }
+  .welcome-logo{
+    width:clamp(170px,30vw,240px);height:auto;display:block;
+    opacity:0;animation:logoIn 1.3s cubic-bezier(.2,.7,.2,1) .15s forwards;
+  }
+  @keyframes logoIn{
+    0%{opacity:0;transform:translateY(20px) scale(.94)}
+    100%{opacity:1;transform:translateY(0) scale(1)}
+  }
+  .welcome-divider{
+    width:0;height:1px;margin:34px auto 24px;
+    background:linear-gradient(90deg, transparent, rgba(212,175,55,.75), transparent);
+    animation:divider 1s ease .9s forwards;
+  }
+  @keyframes divider{to{width:180px}}
+  .welcome-eyebrow{
+    font-size:.66rem;font-weight:600;letter-spacing:.48em;text-transform:uppercase;
+    color:var(--gold-400);opacity:0;animation:fadeUp .8s ease 1.1s forwards;
+  }
+  .welcome-title{
+    font-size:clamp(1.5rem,3.6vw,2.1rem);font-weight:800;
+    letter-spacing:.02em;line-height:1.15;margin-top:14px;opacity:0;
+    background:linear-gradient(100deg,#7a5c15 0%,#c9a227 18%,#fff6c9 38%,#ffd75e 52%,#d4af37 66%,#8a6a1f 88%,#c9a227 100%);
+    background-size:220% auto;-webkit-background-clip:text;background-clip:text;
+    color:transparent;-webkit-text-fill-color:transparent;
+    animation:fadeUp .9s ease 1.25s forwards;
+  }
+  .welcome-tagline{
+    font-size:clamp(.82rem,1.5vw,.92rem);font-weight:300;color:#a5a196;
+    line-height:1.7;max-width:400px;margin:16px auto 0;
+    opacity:0;animation:fadeUp .9s ease 1.4s forwards;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .welcome-progress{
+    width:200px;height:2px;border-radius:99px;background:rgba(255,246,201,.08);
+    margin:40px auto 0;overflow:hidden;opacity:0;
+    animation:fadeUp .8s ease 1.5s forwards;
+  }
+  .welcome-progress span{
+    display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg, var(--gold-500), var(--gold-100));
+    box-shadow:0 0 12px rgba(212,175,55,.6);
+    animation:progress 2.6s cubic-bezier(.5,0,.2,1) 1.5s forwards;
+  }
+  @keyframes progress{0%{width:0}100%{width:100%}}
+  .welcome-skip{
+    position:absolute;top:28px;right:28px;padding:9px 20px;border-radius:999px;
+    font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold-300);background:rgba(212,175,55,.05);
+    border:1px solid rgba(212,175,55,.28);cursor:pointer;font-family:inherit;z-index:3;
+    opacity:0;animation:fadeUp .8s ease 1.8s forwards;
+  }
+  .welcome-skip:hover{background:rgba(212,175,55,.13);border-color:rgba(212,175,55,.55)}
+
+  /* MAIN */
+  #main{
+    opacity:0;transform:translateY(16px);pointer-events:none;
+    transition:opacity 1s ease .2s, transform 1s ease .2s;
+  }
+  #main.reveal{opacity:1;transform:none;pointer-events:auto}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;
+    transition:background .4s ease, backdrop-filter .4s ease, border-color .4s ease, padding .4s ease;
+    border-bottom:1px solid transparent;
+  }
+  nav.scrolled{
+    background:rgba(4,5,10,.72);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    border-bottom-color:var(--line);padding:12px 0;
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+  .brand-mark{
+    width:40px;height:40px;flex:0 0 40px;display:grid;place-items:center;border-radius:12px;
+    background:linear-gradient(145deg,rgba(212,175,55,.20),rgba(212,175,55,.03));
+    border:1px solid rgba(212,175,55,.35);
+    box-shadow:0 0 22px rgba(212,175,55,.22);
+  }
+  .brand-mark svg{width:20px;height:20px;display:block}
+  .brand-txt{display:flex;flex-direction:column;line-height:1}
+  .brand-name{font-size:1.02rem;font-weight:800;letter-spacing:.22em}
+  .brand-sub{font-size:.5rem;letter-spacing:.26em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+
+  .nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+  .nav-links a{text-decoration:none;color:#b9b5aa;font-size:.8rem;font-weight:500;letter-spacing:.06em;transition:color .3s}
+  .nav-links a:hover{color:var(--gold-300)}
+
+  .nav-right{display:flex;align-items:center;gap:10px}
+  .nav-signin, .nav-cta{
+    padding:10px 22px;border-radius:999px;border:none;cursor:pointer;
+    font-size:.76rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    font-family:inherit;white-space:nowrap;transition:transform .25s ease;
+  }
+  .nav-signin{color:var(--gold-300);background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.28)}
+  .nav-signin:hover{transform:translateY(-2px);background:rgba(212,175,55,.11)}
+  .nav-cta{color:#0b0903;background:linear-gradient(135deg,#f4dd8e,#d4af37 45%,#a8801f)}
+  .nav-cta:hover{transform:translateY(-2px)}
+
+  .user-chip{
+    display:none;align-items:center;gap:8px;
+    padding:5px 5px 5px 12px;border-radius:999px;
+    background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.28);font-size:.74rem;
+  }
+  .user-chip.on{display:flex}
+  .user-chip .u-name{color:#e9e6dd;font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .user-chip .u-avatar{
+    width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+    font-size:.66rem;font-weight:800;color:#0b0903;
+    background:linear-gradient(135deg,#fff3c9,#e8c65a 40%,#a8801f);
+  }
+  .logout-btn{
+    padding:6px 12px;border-radius:999px;font-size:.62rem;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:inherit;
+    background:rgba(229,154,142,.10);border:1px solid rgba(229,154,142,.35);color:#e59a8e;
+  }
+  .logout-btn:hover{background:rgba(229,154,142,.22)}
+
+  .menu-toggle{
+    display:none;position:relative;width:44px;height:44px;padding:0;cursor:pointer;border-radius:13px;
+    background:linear-gradient(145deg,rgba(212,175,55,.14),rgba(212,175,55,.03));
+    border:1px solid rgba(212,175,55,.30);
+  }
+  .menu-toggle span{
+    position:absolute;left:50%;width:20px;height:2px;border-radius:2px;
+    background:var(--gold-400);transform:translateX(-50%);
+    transition:transform .35s ease, opacity .25s ease, top .35s ease;
+  }
+  .menu-toggle span:nth-child(1){top:15px}
+  .menu-toggle span:nth-child(2){top:21px}
+  .menu-toggle span:nth-child(3){top:27px}
+  body.menu-open .menu-toggle span:nth-child(1){top:21px;transform:translateX(-50%) rotate(45deg)}
+  body.menu-open .menu-toggle span:nth-child(2){opacity:0}
+  body.menu-open .menu-toggle span:nth-child(3){top:21px;transform:translateX(-50%) rotate(-45deg)}
+
+  .menu-overlay{
+    position:fixed;inset:0;z-index:90;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:110px max(6vw,24px) 48px;
+    background:rgba(4,5,10,.97);
+    backdrop-filter:blur(26px) saturate(130%);
+    -webkit-backdrop-filter:blur(26px) saturate(130%);
+    opacity:0;visibility:hidden;
+    transition:opacity .45s ease, visibility .45s ease;
+    overflow-y:auto;
+  }
+  body.menu-open .menu-overlay{opacity:1;visibility:visible}
+  .menu-list{list-style:none;width:min(880px,100%);margin-inline:auto}
+  .menu-list li{opacity:0;transform:translateY(20px);transition:opacity .5s ease, transform .5s ease}
+  body.menu-open .menu-list li{opacity:1;transform:none}
+  body.menu-open .menu-list li:nth-child(1){transition-delay:.1s}
+  body.menu-open .menu-list li:nth-child(2){transition-delay:.15s}
+  body.menu-open .menu-list li:nth-child(3){transition-delay:.2s}
+  body.menu-open .menu-list li:nth-child(4){transition-delay:.25s}
+  body.menu-open .menu-list li:nth-child(5){transition-delay:.3s}
+  body.menu-open .menu-list li:nth-child(6){transition-delay:.35s}
+  .menu-link{
+    display:flex;align-items:center;gap:20px;
+    padding:18px 0;text-decoration:none;
+    border-bottom:1px solid rgba(212,175,55,.11);color:#e9e6dd;
+    background:transparent;border-left:none;border-right:none;border-top:none;
+    font-family:inherit;text-align:left;width:100%;cursor:pointer;
+    transition:color .3s, padding-left .3s;
+  }
+  .menu-link:hover{color:var(--gold-300);padding-left:16px}
+  .menu-num{font-size:.66rem;font-weight:700;letter-spacing:.24em;color:var(--gold-600)}
+  .menu-label{font-size:clamp(1.5rem,5.2vw,2.6rem);font-weight:800;letter-spacing:-.02em;flex:1}
+  .menu-foot{
+    width:min(880px,100%);margin:32px auto 0;
+    display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    opacity:0;transition:opacity .5s ease .4s;
+  }
+  body.menu-open .menu-foot{opacity:1}
+  .menu-meta{display:flex;gap:22px;flex-wrap:wrap}
+  .menu-meta a{color:#7c7869;text-decoration:none;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+  .menu-meta a:hover{color:var(--gold-300)}
+  .menu-cta{
+    display:inline-flex;align-items:center;gap:10px;padding:13px 28px;border-radius:999px;
+    font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:#0b0903;border:none;cursor:pointer;font-family:inherit;
+    background:linear-gradient(135deg,#fff3c9,#e8c65a 30%,#d4af37 60%,#a8801f);
+  }
+
+  /* HERO */
+  .hero{padding:150px 0 90px;min-height:100svh;display:flex;align-items:center}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:60px}
+  .hero h1{font-size:clamp(2.6rem,5.4vw,4rem);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:24px}
+  .hero h1 .white{color:#fff}
+  .hero-desc{font-size:1rem;line-height:1.8;color:#9598aa;font-weight:300;max-width:480px;margin-bottom:36px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:56px}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 30px;border-radius:999px;border:none;cursor:pointer;
+    font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    text-decoration:none;font-family:inherit;transition:transform .3s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{color:#0b0903;background:linear-gradient(135deg,#fff3c9,#e8c65a 30%,#d4af37 60%,#a8801f)}
+  .btn-primary:hover{transform:translateY(-3px)}
+  .btn-ghost{color:var(--gold-300);background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.30)}
+  .btn-ghost:hover{transform:translateY(-3px);background:rgba(212,175,55,.11)}
+
+  .hero-stats{display:flex;gap:44px;flex-wrap:wrap}
+  .hero-stat{display:flex;flex-direction:column;gap:5px}
+  .hero-stat .num{font-size:1.55rem;font-weight:800;color:#fff}
+  .hero-stat .lbl{font-size:.62rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+  .hero-right{position:relative;display:flex;align-items:center;justify-content:center;min-height:440px}
+  .orb-container{position:relative;width:100%;max-width:440px;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+  .orb-glow{
+    position:absolute;width:75%;height:75%;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,175,55,.35) 0%,rgba(232,198,90,.15) 40%,transparent 70%);
+    filter:blur(30px);animation:breathe 5s ease-in-out infinite;
+  }
+  @keyframes breathe{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.1);opacity:1}}
+  .orb{
+    position:relative;width:55%;aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff6c9 0%, #e8c65a 22%, #d4af37 48%, #8a6a1f 78%, #4b3708 100%);
+    box-shadow:0 0 60px rgba(212,175,55,.65),0 0 130px rgba(212,175,55,.35);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .orb-logo{font-size:clamp(1.3rem,2.6vw,1.9rem);font-weight:900;letter-spacing:.15em;color:rgba(11,9,3,.85)}
+  .orb-ring{position:absolute;width:85%;height:85%;border-radius:50%;border:1px dashed rgba(212,175,55,.28);animation:spin 30s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .badge{
+    position:absolute;display:flex;align-items:center;gap:10px;
+    padding:10px 14px;border-radius:14px;
+    background:rgba(8,7,3,.88);border:1px solid rgba(212,175,55,.28);
+  }
+  .badge:nth-of-type(1){top:12%;left:0}
+  .badge:nth-of-type(2){top:20%;right:0}
+  .badge:nth-of-type(3){bottom:14%;right:6%}
+  .badge-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;background:rgba(212,175,55,.18);color:var(--gold-300)}
+  .badge-text{display:flex;flex-direction:column;line-height:1.2}
+  .badge-label{font-size:.55rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#6b6e80}
+  .badge-value{font-size:.82rem;font-weight:700;color:#fff}
+  .badge-value.gold{color:var(--gold-300)}
+
+  /* SECTIONS */
+  section.block{padding:120px 0}
+  .sec-head{max-width:640px;margin-bottom:60px}
+  .sec-head h2{font-size:clamp(2rem,4.6vw,3.3rem);font-weight:800;letter-spacing:-.02em;line-height:1.12;margin:20px 0}
+  .sec-head p{color:#948f83;font-weight:300;font-size:1rem;line-height:1.85}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .card{
+    padding:36px 30px;border-radius:20px;
+    background:linear-gradient(160deg,rgba(255,246,201,.045),rgba(255,246,201,.008));
+    border:1px solid rgba(212,175,55,.13);
+    transition:transform .4s ease, border-color .4s ease;
+  }
+  .card:hover{transform:translateY(-6px);border-color:rgba(212,175,55,.42)}
+  .card-ico{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.32);margin-bottom:24px}
+  .card-ico svg{width:22px;height:22px;stroke:var(--gold-400);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .card h3{font-size:1.12rem;font-weight:700;margin-bottom:12px;color:#f2eee3}
+  .card p{font-size:.9rem;color:#8f8b7e;font-weight:300;line-height:1.8}
+
+  /* DASHBOARD */
+  .dashboard-shell{
+    display:grid;grid-template-columns:250px 1fr;
+    background:linear-gradient(160deg,rgba(255,246,201,.035),rgba(255,246,201,.006));
+    border:1px solid rgba(212,175,55,.16);border-radius:24px;overflow:hidden;
+  }
+  .dash-side{padding:28px 20px;border-right:1px solid rgba(212,175,55,.10);background:rgba(0,0,0,.18)}
+  .dash-user{display:flex;align-items:center;gap:12px;padding-bottom:22px;border-bottom:1px solid rgba(212,175,55,.10);margin-bottom:22px}
+  .dash-avatar{
+    width:46px;height:46px;flex:0 0 46px;border-radius:13px;display:grid;place-items:center;
+    font-weight:800;font-size:.9rem;color:#0b0903;
+    background:linear-gradient(135deg,#fff3c9,#e8c65a 30%,#d4af37 60%,#a8801f);
+  }
+  .dash-user-name{font-size:.86rem;font-weight:700;color:#f2eee3}
+  .dash-user-id{font-size:.64rem;letter-spacing:.14em;color:var(--muted);margin-top:4px}
+  .dash-nav{display:flex;flex-direction:column;gap:4px}
+  .dash-tab{
+    display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;
+    background:transparent;border:1px solid transparent;color:#a5a196;
+    font-family:inherit;font-size:.84rem;font-weight:500;cursor:pointer;text-align:left;
+    transition:all .3s ease;
+  }
+  .dash-tab svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;flex:0 0 17px}
+  .dash-tab:hover{color:var(--gold-300);background:rgba(212,175,55,.06)}
+  .dash-tab.active{
+    color:var(--gold-300);
+    background:linear-gradient(135deg,rgba(212,175,55,.16),rgba(212,175,55,.04));
+    border-color:rgba(212,175,55,.28);
+  }
+  .dash-main{padding:clamp(22px,3vw,34px);min-height:520px}
+  .dash-panel{display:none}
+  .dash-panel.active{display:block}
+  .panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+  .panel-head h3{font-size:1.35rem;font-weight:800;color:#f2eee3}
+  .panel-head .panel-date{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+  .balance-card{
+    padding:30px 32px;border-radius:18px;overflow:hidden;
+    background:linear-gradient(135deg,rgba(212,175,55,.22),rgba(168,128,31,.06) 60%);
+    border:1px solid rgba(212,175,55,.35);margin-bottom:22px;
+  }
+  .balance-label{font-size:.66rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-300)}
+  .balance-value{font-size:clamp(2rem,4.4vw,2.9rem);font-weight:800;letter-spacing:-.02em;margin-top:8px;line-height:1}
+  .balance-meta{display:flex;flex-wrap:wrap;gap:20px;margin-top:18px}
+  .balance-chip{
+    display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;
+    background:rgba(0,0,0,.28);border:1px solid rgba(212,175,55,.22);
+    font-size:.72rem;color:#d9d3c2;
+  }
+  .balance-chip b{color:var(--gold-300);font-weight:700}
+  .up{color:#8ee5a8 !important}
+
+  .mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+  .mini-stat{padding:18px;border-radius:14px;background:rgba(255,246,201,.03);border:1px solid rgba(212,175,55,.13)}
+  .mini-stat .ms-label{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .mini-stat .ms-value{font-size:1.28rem;font-weight:800;margin-top:8px}
+  .mini-stat .ms-delta{font-size:.7rem;margin-top:6px;color:#8ee5a8}
+
+  .chart-card{padding:22px 24px;border-radius:16px;background:rgba(255,246,201,.025);border:1px solid rgba(212,175,55,.12);margin-bottom:22px}
+  .chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px;flex-wrap:wrap;gap:8px}
+  .chart-title{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c9c4b6}
+  .chart-value{font-size:1rem;font-weight:700}
+  .bars{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;align-items:end;height:130px}
+  .bar-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+  .bar{width:100%;max-width:34px;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--gold-400),rgba(212,175,55,.18))}
+  .bar-day{font-size:.62rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+
+  .tx-list{list-style:none;display:flex;flex-direction:column}
+  .tx{display:flex;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid rgba(212,175,55,.08)}
+  .tx:last-child{border-bottom:none}
+  .tx-ico{width:36px;height:36px;flex:0 0 36px;border-radius:11px;display:grid;place-items:center;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.20)}
+  .tx-ico svg{width:16px;height:16px;stroke:var(--gold-400);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .tx-body{flex:1;min-width:0}
+  .tx-name{font-size:.84rem;font-weight:600;color:#e9e6dd}
+  .tx-date{font-size:.68rem;color:var(--muted);margin-top:2px}
+  .tx-amount{font-size:.86rem;font-weight:700;color:#8ee5a8;white-space:nowrap}
+  .tx-amount.out{color:#e59a8e}
+
+  /* FORM */
+  .form-field{display:flex;flex-direction:column;gap:10px}
+  .form-label{font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#c9c4b6;display:flex;justify-content:space-between}
+  .input-wrap{position:relative;display:flex;align-items:center}
+  .form-field input,
+  .form-field select,
+  .form-field textarea{
+    width:100%;padding:15px 16px;border-radius:13px;
+    background:rgba(255,246,201,.07);border:1px solid rgba(212,175,55,.32);
+    color:#f5f1e6;font-family:inherit;font-size:.95rem;outline:none;
+    transition:border-color .3s, box-shadow .3s, background .3s;
+    appearance:none;-webkit-appearance:none;
+  }
+  .form-field textarea{resize:vertical;min-height:92px;line-height:1.6;padding-top:14px}
+  .form-field input::placeholder,
+  .form-field textarea::placeholder{color:#8f8a7c;opacity:1}
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus{
+    border-color:rgba(212,175,55,.75);background:rgba(212,175,55,.09);
+    box-shadow:0 0 0 3px rgba(212,175,55,.16);
+  }
+  .form-field select{
+    cursor:pointer;
+    background-image:url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2.2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 16px center;padding-right:44px;
+  }
+  .form-field select option{background:#0b0c13;color:#e9e6dd}
+  .input-suffix{position:absolute;right:14px;font-size:.72rem;font-weight:700;letter-spacing:.12em;color:var(--gold-400);text-transform:uppercase;pointer-events:none}
+  .form-field input.has-suffix{padding-right:130px}
+  .input-wrap.has-max .input-suffix{opacity:0}
+  .max-btn{
+    position:absolute;right:8px;padding:8px 14px;border-radius:9px;
+    background:rgba(212,175,55,.18);border:1px solid rgba(212,175,55,.40);
+    color:var(--gold-300);font-family:inherit;font-size:.64rem;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  }
+  .form-field.error input,
+  .form-field.error select,
+  .form-field.error textarea{border-color:rgba(229,154,142,.70)}
+  .err-msg{font-size:.68rem;color:#e59a8e;display:none;margin-top:2px}
+  .form-field.error .err-msg{display:block}
+
+  /* WITHDRAWAL */
+  .wd-available{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    padding:18px 22px;border-radius:14px;
+    background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(212,175,55,.02));
+    border:1px solid rgba(212,175,55,.24);margin-bottom:28px;
+  }
+  .wd-avail-label{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-300)}
+  .wd-avail-value{font-size:1.5rem;font-weight:800;margin-top:4px}
+  .wd-form{display:grid;gap:24px}
+  .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .method-card{position:relative;cursor:pointer;display:block}
+  .method-card input{position:absolute;opacity:0;pointer-events:none}
+  .method-inner{
+    display:flex;align-items:center;gap:13px;padding:15px 16px;border-radius:13px;
+    background:rgba(255,246,201,.045);border:1px solid rgba(212,175,55,.22);
+    transition:all .3s ease;
+  }
+  .method-inner svg{width:20px;height:20px;stroke:var(--gold-400);fill:none;stroke-width:1.7;flex:0 0 20px}
+  .method-name{font-size:.86rem;font-weight:600;color:#e0dbcd}
+  .method-sub{font-size:.64rem;letter-spacing:.08em;color:var(--muted);margin-top:3px}
+  .method-card input:checked + .method-inner{
+    border-color:rgba(212,175,55,.70);
+    background:linear-gradient(135deg,rgba(212,175,55,.20),rgba(212,175,55,.05));
+  }
+  .method-card input:checked + .method-inner .method-name{color:var(--gold-100)}
+  .field-group{display:grid;gap:24px}
+  .field-group[hidden]{display:none}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .form-submit-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
+  .wd-note{font-size:.7rem;color:var(--muted);line-height:1.6;flex:1;min-width:200px}
+  .wd-success{
+    display:none;padding:26px;border-radius:16px;
+    background:linear-gradient(135deg,rgba(142,229,168,.10),rgba(142,229,168,.02));
+    border:1px solid rgba(142,229,168,.30);text-align:center;
+  }
+  .wd-success.show{display:block}
+  .wd-success .s-ico{width:54px;height:54px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:rgba(142,229,168,.12);border:1px solid rgba(142,229,168,.4)}
+  .wd-success .s-ico svg{width:26px;height:26px;stroke:#8ee5a8;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .wd-success h4{font-size:1.1rem;font-weight:800;color:#c9f0d5;margin-bottom:8px}
+  .wd-success p{font-size:.84rem;color:#9fb8a6;font-weight:300;line-height:1.7;max-width:420px;margin:0 auto}
+  .wd-success .s-ref{display:inline-block;margin-top:16px;padding:7px 14px;border-radius:999px;background:rgba(0,0,0,.3);border:1px solid rgba(142,229,168,.25);font-size:.7rem;letter-spacing:.14em;color:#c9f0d5}
+
+  /* MODALS */
+  .modal{
+    position:fixed;inset:0;z-index:200;
+    display:flex;align-items:center;justify-content:center;padding:24px;
+    opacity:0;visibility:hidden;transition:opacity .35s ease, visibility .35s ease;
+    overflow-y:auto;
+  }
+  .modal.open{opacity:1;visibility:visible}
+  .modal-backdrop{position:absolute;inset:0;background:rgba(2,3,7,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .modal-card{
+    position:relative;z-index:1;width:min(500px,100%);max-height:calc(100vh - 48px);
+    overflow-y:auto;padding:42px;border-radius:22px;
+    background:linear-gradient(165deg,rgba(16,14,9,.98),rgba(6,6,10,.99));
+    border:1px solid rgba(212,175,55,.30);
+    box-shadow:0 40px 100px -30px rgba(0,0,0,.9), 0 0 80px -30px rgba(212,175,55,.45);
+    transform:translateY(16px) scale(.97);
+    transition:transform .4s ease;
+  }
+  .modal.open .modal-card{transform:none}
+  .modal-close{
+    position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;
+    display:grid;place-items:center;
+    background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.28);
+    color:var(--gold-300);font-size:1.05rem;cursor:pointer;font-family:inherit;
+  }
+  .modal-close:hover{background:rgba(212,175,55,.2)}
+  .modal-head{text-align:center;margin-bottom:28px}
+  .modal-head h2{font-size:clamp(1.5rem,3.4vw,1.95rem);font-weight:800;margin:12px 0 10px;color:#f5f1e6}
+  .modal-head p{font-size:.86rem;color:#948f83;font-weight:300;line-height:1.7;max-width:360px;margin-inline:auto}
+  .form{display:grid;gap:18px}
+  .alt-line{text-align:center;font-size:.78rem;color:#7c7869;margin-top:16px;padding-top:18px;border-top:1px solid rgba(212,175,55,.10)}
+  .alt-line button{background:none;border:none;color:var(--gold-300);font-weight:600;cursor:pointer;font-size:.78rem;font-family:inherit;padding:0}
+  .alt-line button:hover{color:var(--gold-100)}
+  .modal-success{display:none;text-align:center;padding:16px 0 4px}
+  .modal-success.show{display:block}
+  .modal-success .s-ico{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;background:rgba(142,229,168,.16);border:1px solid rgba(142,229,168,.4)}
+  .modal-success .s-ico svg{width:28px;height:28px;stroke:#8ee5a8;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .modal-success h3{font-size:1.25rem;font-weight:800;color:#c9f0d5;margin-bottom:10px}
+  .modal-success p{font-size:.86rem;color:#9fb8a6;font-weight:300;line-height:1.7;max-width:340px;margin:0 auto 20px}
+  .modal-success .s-ref{display:inline-block;padding:8px 16px;border-radius:999px;background:rgba(0,0,0,.3);border:1px solid rgba(142,229,168,.25);font-size:.7rem;letter-spacing:.14em;color:#c9f0d5;margin-bottom:22px}
+
+  .pw-strength{display:flex;gap:5px;margin-top:8px}
+  .pw-bar{flex:1;height:3px;border-radius:99px;background:rgba(255,246,201,.08);transition:background .3s}
+  .pw-strength[data-strength="1"] .pw-bar:nth-child(1){background:#e59a8e}
+  .pw-strength[data-strength="2"] .pw-bar:nth-child(-n+2){background:#e8c65a}
+  .pw-strength[data-strength="3"] .pw-bar:nth-child(-n+3){background:#c9a227}
+  .pw-strength[data-strength="4"] .pw-bar{background:#8ee5a8}
+  .pw-label{font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;margin-top:6px;color:var(--muted)}
+
+  .terms{display:flex;align-items:flex-start;gap:11px;font-size:.76rem;color:#a5a196;line-height:1.55;cursor:pointer}
+  .terms input{position:absolute;opacity:0;pointer-events:none}
+  .terms-box{
+    width:19px;height:19px;flex:0 0 19px;margin-top:2px;border-radius:5px;
+    background:rgba(255,246,201,.05);border:1px solid rgba(212,175,55,.35);
+    display:grid;place-items:center;transition:all .25s ease;
+  }
+  .terms-box svg{width:11px;height:11px;stroke:#0b0903;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .2s}
+  .terms input:checked + .terms-box{background:linear-gradient(135deg,#f4dd8e,#d4af37);border-color:rgba(212,175,55,.9)}
+  .terms input:checked + .terms-box svg{opacity:1}
+  .terms a{color:var(--gold-300);text-decoration:none}
+
+  /* FINAL */
+  .final{padding:74px 8%;border-radius:28px;text-align:center;background:linear-gradient(165deg,rgba(212,175,55,.10),rgba(212,175,55,.015) 55%);border:1px solid rgba(212,175,55,.24)}
+  .final h2{font-size:clamp(1.9rem,4.4vw,3rem);font-weight:800;line-height:1.15;margin-bottom:20px}
+  .final p{color:#9b9689;font-weight:300;max-width:520px;margin:0 auto 40px;line-height:1.85}
+  .final .hero-cta{margin-top:0;justify-content:center}
+
+  footer{border-top:1px solid var(--line);padding:56px 0 44px;margin-top:130px}
+  .foot-inner{display:flex;flex-wrap:wrap;gap:30px;align-items:center;justify-content:space-between}
+  .foot-links{display:flex;gap:30px;flex-wrap:wrap;list-style:none}
+  .foot-links a{color:#7c7869;text-decoration:none;font-size:.78rem;transition:color .3s}
+  .foot-links a:hover{color:var(--gold-300)}
+  .copy{color:#5f5c53;font-size:.72rem}
+  .disclaimer{margin-top:32px;padding-top:26px;border-top:1px solid rgba(212,175,55,.08);color:#55524a;font-size:.68rem;line-height:1.8;max-width:760px}
+
+  @media (max-width:980px){
+    .grid{grid-template-columns:1fr 1fr}
+    .hero-grid{grid-template-columns:1fr;gap:50px;text-align:center}
+    .hero-left{display:flex;flex-direction:column;align-items:center}
+    .hero-desc{max-width:100%}
+    .hero-cta{justify-content:center}
+    .hero-stats{justify-content:center}
+    .hero-right{min-height:340px}
+    .badge:nth-of-type(1){top:5%;left:-5%}
+    .badge:nth-of-type(2){top:8%;right:-5%}
+    .badge:nth-of-type(3){bottom:6%;right:0%}
+    .dashboard-shell{grid-template-columns:1fr}
+    .dash-side{border-right:none;border-bottom:1px solid rgba(212,175,55,.10);padding:22px 20px}
+    .dash-nav{flex-direction:row;flex-wrap:wrap}
+    .dash-tab{flex:1 1 auto;justify-content:center;min-width:130px}
+  }
+  @media (max-width:760px){
+    .nav-links{display:none}
+    .menu-toggle{display:block}
+    .nav-signin,.nav-cta{display:none}
+    section.block{padding:80px 0}
+    .grid{grid-template-columns:1fr}
+    .hero{padding-top:120px;padding-bottom:60px}
+    .final{padding:56px 24px}
+    .mini-stats{grid-template-columns:1fr}
+    .form-row{grid-template-columns:1fr}
+    .method-grid{grid-template-columns:1fr}
+    .dash-main{padding:22px 18px}
+    .modal-card{padding:34px 22px}
+    .modal{padding:14px}
+    .welcome-card{padding:44px 26px 40px}
+  }
+  @media (min-width:761px){ .menu-overlay{display:none} }
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="welcome">
+  <button type="button" class="welcome-skip" id="skipBtn">Skip</button>
+  <div class="welcome-card">
+    <div class="welcome-halo"></div>
+    <svg class="welcome-logo" viewBox="0 0 260 320" aria-label="GEI logo">
+      <defs>
+        <linearGradient id="lgSteel" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8fd0e8"/><stop offset="45%" stop-color="#5a9bbf"/><stop offset="100%" stop-color="#2d5872"/>
+        </linearGradient>
+        <linearGradient id="lgRibbon" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#9fe0f5"/><stop offset="50%" stop-color="#5fb6da"/><stop offset="100%" stop-color="#3a7f9e"/>
+        </linearGradient>
+        <linearGradient id="lgArc" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#79c4e0"/><stop offset="100%" stop-color="#3f88a8"/>
+        </linearGradient>
+        <linearGradient id="lgLeaf" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#5fb6da"/><stop offset="100%" stop-color="#2d6f8f"/>
+        </linearGradient>
+        <linearGradient id="lgText" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#8fd0e8"/><stop offset="50%" stop-color="#5fb6da"/><stop offset="100%" stop-color="#3f88a8"/>
+        </linearGradient>
+      </defs>
+      <rect x="86" y="30" width="12" height="102" fill="url(#lgSteel)"/>
+      <rect x="104" y="30" width="12" height="102" fill="url(#lgSteel)"/>
+      <rect x="122" y="30" width="12" height="102" fill="url(#lgSteel)"/>
+      <path d="M150 30 A 78 78 0 0 1 150 186 L 138 186 A 66 66 0 0 0 138 42 Z" fill="url(#lgArc)"/>
+      <path d="M84 82 C 96 92, 118 118, 118 138 C 118 158, 100 172, 86 178 C 108 176, 132 162, 138 140 C 144 118, 130 98, 118 86 C 108 76, 96 76, 84 82 Z" fill="url(#lgRibbon)"/>
+      <rect x="86" y="150" width="24" height="16" rx="4" fill="url(#lgSteel)"/>
+      <g fill="url(#lgLeaf)">
+        <path d="M32 190 q 10 -8 22 -6 q -10 6 -22 6 z"/>
+        <path d="M28 198 q 12 -8 24 -6 q -12 8 -24 6 z"/>
+        <path d="M36 206 q 12 -6 24 -3 q -12 6 -24 3 z"/>
+        <path d="M48 213 q 12 -5 22 -1 q -11 4 -22 1 z"/>
+        <path d="M62 218 q 11 -4 20 1 q -10 3 -20 -1 z"/>
+        <path d="M78 222 q 11 -3 18 3 q -9 2 -18 -3 z"/>
+        <path d="M228 190 q -10 -8 -22 -6 q 10 6 22 6 z"/>
+        <path d="M232 198 q -12 -8 -24 -6 q 12 8 24 6 z"/>
+        <path d="M224 206 q -12 -6 -24 -3 q 12 6 24 3 z"/>
+        <path d="M212 213 q -12 -5 -22 -1 q 11 4 22 1 z"/>
+        <path d="M198 218 q -11 -4 -20 1 q 10 3 20 -1 z"/>
+        <path d="M182 222 q -11 -3 -18 3 q 9 2 18 -3 z"/>
+      </g>
+      <text x="130" y="270" text-anchor="middle" font-family="Inter,sans-serif" font-size="26" font-weight="800" fill="url(#lgText)">GLOBAL ECONOMY</text>
+      <text x="130" y="294" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="500" letter-spacing="8" fill="#5fb6da">INVESTMENT</text>
+    </svg>
+    <div class="welcome-divider"></div>
+    <div class="welcome-eyebrow">Welcome</div>
+    <div class="welcome-title">Global Economy Investment</div>
+    <p class="welcome-tagline">Institutional-grade strategy, borderless access, and a gold standard of trust.</p>
+    <div class="welcome-progress"><span></span></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <canvas id="stars"></canvas>
+  <div class="page">
+
+    <nav id="nav">
+      <div class="wrap nav-inner">
+        <a href="#top" class="brand">
+          <span class="brand-mark">
+            <svg viewBox="0 0 24 24">
+              <defs><linearGradient id="gstar" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fff6c9"/><stop offset="50%" stop-color="#e8c65a"/><stop offset="100%" stop-color="#a8801f"/>
+              </linearGradient></defs>
+              <path fill="url(#gstar)" d="M12 1.6l2.9 6.6 7.1.7-5.3 4.8 1.5 7-6.2-3.7-6.2 3.7 1.5-7L2 8.9l7.1-.7z"/>
+            </svg>
+          </span>
+          <span class="brand-txt">
+            <span class="brand-name gold-text">GEI</span>
+            <span class="brand-sub">Global Economy Investment</span>
+          </span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#dashboard">Dashboard</a></li>
+          <li><a href="#platform">Platform</a></li>
+          <li><a href="#markets">Markets</a></li>
+          <li><a href="#access">Access</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <button type="button" class="nav-signin" data-open-signin>Sign In</button>
+          <button type="button" class="nav-cta" data-open-signup>Sign Up</button>
+          <div class="user-chip" id="userChip">
+            <span class="u-name" id="userName">Member</span>
+            <span class="u-avatar" id="userAvatar">M</span>
+            <button type="button" class="logout-btn" id="logoutBtn">Log Out</button>
+          </div>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="menu-overlay" id="menuOverlay">
+        <ul class="menu-list">
+          <li><a href="#dashboard" class="menu-link"><span class="menu-num">01</span><span class="menu-label">Dashboard</span></a></li>
+          <li><a href="#platform" class="menu-link"><span class="menu-num">02</span><span class="menu-label">Platform</span></a></li>
+          <li><a href="#markets" class="menu-link"><span class="menu-num">03</span><span class="menu-label">Markets</span></a></li>
+          <li><a href="#dashboard" data-open-tab="withdraw" class="menu-link"><span class="menu-num">04</span><span class="menu-label">Withdraw</span></a></li>
+          <li><button type="button" class="menu-link" data-open-signin><span class="menu-num">05</span><span class="menu-label">Sign In</span></button></li>
+          <li><button type="button" class="menu-link" data-open-signup><span class="menu-num">06</span><span class="menu-label">Sign Up</span></button></li>
+        </ul>
+        <div class="menu-foot">
+          <div class="menu-meta">
+            <a href="#top">LinkedIn</a><a href="#top">Twitter</a><a href="#top">Legal</a>
+          </div>
+          <button type="button" class="menu-cta" data-open-signup>Sign Up Free</button>
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div class="hero-left">
+          <h1>
+            <span class="white">Secure.</span><br>
+            <span class="white">Decentralized.</span><br>
+            <span class="gold-text">Limitless.</span>
+          </h1>
+          <p class="hero-desc">
+            Next-generation investment infrastructure powering the future of global
+            finance — built for speed, security, and worldwide scale.
+          </p>
+          <div class="hero-cta">
+            <button type="button" class="btn btn-primary" data-open-signup>Get Started</button>
+            <a href="#platform" class="btn btn-ghost">Read Whitepaper</a>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><span class="num gold-text" data-target="120" data-suffix="K+">120K+</span><span class="lbl">Active Users</span></div>
+            <div class="hero-stat"><span class="num gold-text" data-target="4.2" data-decimals="1" data-prefix="$" data-suffix="B">$4.2B</span><span class="lbl">Total Volume</span></div>
+            <div class="hero-stat"><span class="num gold-text" data-target="99.9" data-decimals="1" data-suffix="%">99.9%</span><span class="lbl">Uptime</span></div>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="orb-container">
+            <div class="orb-glow"></div>
+            <div class="orb-ring"></div>
+            <div class="orb"><span class="orb-logo">GEI</span></div>
+            <div class="badge"><div class="badge-icon">₿</div><div class="badge-text"><span class="badge-label">BTC</span><span class="badge-value gold">$67,420</span></div></div>
+            <div class="badge"><div class="badge-icon">✓</div><div class="badge-text"><span class="badge-label">Security</span><span class="badge-value gold">Verified</span></div></div>
+            <div class="badge"><div class="badge-icon">Ξ</div><div class="badge-text"><span class="badge-label">ETH</span><span class="badge-value gold">+4.8%</span></div></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="block" id="dashboard">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="eyebrow">Your Account</span>
+          <h2>Investor <span class="gold-text">Dashboard</span></h2>
+          <p>Track your holdings, monitor performance, and manage withdrawals.</p>
+        </div>
+
+        <div class="dashboard-shell">
+          <aside class="dash-side">
+            <div class="dash-user">
+              <div class="dash-avatar" id="dashAvatar">JS</div>
+              <div>
+                <div class="dash-user-name" id="dashName">Jordan Sterling</div>
+                <div class="dash-user-id">GEI-8421-0093</div>
+              </div>
+            </div>
+            <nav class="dash-nav">
+              <button class="dash-tab active" data-tab="overview" type="button">Overview</button>
+              <button class="dash-tab" data-tab="withdraw" type="button">Withdrawal</button>
+            </nav>
+          </aside>
+
+          <div class="dash-main">
+            <div class="dash-panel active" data-panel="overview">
+              <div class="panel-head">
+                <h3>Portfolio Overview</h3>
+                <span class="panel-date">Updated just now</span>
+              </div>
+              <div class="balance-card">
+                <div class="balance-label">Total Portfolio Value</div>
+                <div class="balance-value gold-text">$1,350,000.60</div>
+                <div class="balance-meta">
+                  <span class="balance-chip">Today <b class="up">+$3,412.08 (+1.21%)</b></span>
+                  <span class="balance-chip">Available <b>$700,180.00</b></span>
+                </div>
+              </div>
+              <div class="mini-stats">
+                <div class="mini-stat"><div class="ms-label">Total Earnings</div><div class="ms-value gold-text">$41,208.90</div><div class="ms-delta">▲ 12.4% this month</div></div>
+                <div class="mini-stat"><div class="ms-label">Active Positions</div><div class="ms-value">18</div><div class="ms-delta">Across 6 markets</div></div>
+                <div class="mini-stat"><div class="ms-label">Pending Payouts</div><div class="ms-value">$4,200.00</div><div class="ms-delta">1 processing</div></div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-head">
+                  <span class="chart-title">7-Day Performance</span>
+                  <span class="chart-value gold-text">+8.4%</span>
+                </div>
+                <div class="bars">
+                  <div class="bar-wrap"><div class="bar" style="height:42%"></div><span class="bar-day">Mon</span></div>
+                  <div class="bar-wrap"><div class="bar" style="height:58%"></div><span class="bar-day">Tue</span></div>
+                  <div class="bar-wrap"><div class="bar" style="height:38%"></div><span class="bar-day">Wed</span></div>
+                  <div class="bar-wrap"><div class="bar" style="height:72%"></div><span class="bar-day">Thu</span></div>
+                  <div class="bar-wrap"><div class="bar" style="height:54%"></div><span class="bar-day">Fri</span></div>
+                  <div class="bar-wrap"><div class="bar" style="height:88%"></div><span class="bar-day">Sat</span></div>
+                  <div class="bar-wrap"><div class="bar" style="height:96%"></div><span class="bar-day">Sun</span></div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-head"><span class="chart-title">Recent Activity</span></div>
+                <ul class="tx-list">
+                  <li class="tx">
+                    <span class="tx-ico"><svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></span>
+                    <div class="tx-body"><div class="tx-name">Deposit · Wire</div><div class="tx-date">Sep 16, 2026</div></div>
+                    <span class="tx-amount">+$12,000.00</span>
+                  </li>
+                  <li class="tx">
+                    <span class="tx-ico"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 5-7 4 4"/><path d="M3 21h18"/></svg></span>
+                    <div class="tx-body"><div class="tx-name">Dividend · Equity Fund</div><div class="tx-date">Sep 14, 2026</div></div>
+                    <span class="tx-amount">+$862.40</span>
+                  </li>
+                  <li class="tx">
+                    <span class="tx-ico"><svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12l7 7 7-7"/></svg></span>
+                    <div class="tx-body"><div class="tx-name">Withdrawal · BTC</div><div class="tx-date">Sep 11, 2026</div></div>
+                    <span class="tx-amount out">−$3,200.00</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="dash-panel" data-panel="withdraw">
+              <div class="panel-head">
+                <h3>Request a Withdrawal</h3>
+                <span class="panel-date">1–2 business days</span>
+              </div>
+
+              <div class="wd-success" id="wdSuccess">
+                <div class="s-ico"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+                <h4>Withdrawal submitted</h4>
+                <p>Your request is being reviewed. You'll get an email confirmation shortly.</p>
+                <span class="s-ref" id="wdRef">REF · GEI-WD-000000</span>
+              </div>
+
+              <form class="wd-form" id="wdForm" novalidate>
+                <div class="wd-available">
+                  <div>
+                    <div class="wd-avail-label">Available to Withdraw</div>
+                    <div class="wd-avail-value gold-text">$52,180.00</div>
+                  </div>
+                  <div class="balance-chip">Min <b>$50.00</b></div>
+                </div>
+
+                <div class="form-field" data-field="amount">
+                  <label class="form-label" for="wdAmount">Withdrawal Amount</label>
+                  <div class="input-wrap" id="amountWrap">
+                    <input type="number" id="wdAmount" placeholder="0.00" min="50" step="0.01" class="has-suffix" />
+                    <span class="input-suffix">USD</span>
+                    <button type="button" class="max-btn" id="maxBtn" style="display:none">Max</button>
+                  </div>
+                  <span class="err-msg" data-err-for="amount">Enter a valid amount</span>
+                </div>
+
+                <div class="form-field" data-field="method">
+                  <label class="form-label">Withdrawal Method</label>
+                  <div class="method-grid">
+                    <label class="method-card">
+                      <input type="radio" name="wdMethod" value="crypto" checked>
+                      <div class="method-inner">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
+                        <div><div class="method-name">Crypto Wallet</div><div class="method-sub">BTC · ETH · USDT</div></div>
+                      </div>
+                    </label>
+                    <label class="method-card">
+                      <input type="radio" name="wdMethod" value="bank">
+                      <div class="method-inner">
+                        <svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6"/><path d="M5 10v9M19 10v9"/></svg>
+                        <div><div class="method-name">Bank Transfer</div><div class="method-sub">SWIFT · SEPA</div></div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="field-group" data-group="crypto">
+                  <div class="form-field" data-field="network">
+                    <label class="form-label" for="wdNetwork">Network</label>
+                    <select id="wdNetwork">
+                      <option value="">Select a network…</option>
+                      <option value="btc">Bitcoin (BTC)</option>
+                      <option value="eth">Ethereum (ERC-20)</option>
+                      <option value="trc20">Tether (TRC-20)</option>
+                    </select>
+                    <span class="err-msg" data-err-for="network">Please select a network</span>
+                  </div>
+                  <div class="form-field" data-field="wallet">
+                    <label class="form-label" for="wdWallet">Wallet Address</label>
+                    <input type="text" id="wdWallet" placeholder="Paste your wallet address" />
+                    <span class="err-msg" data-err-for="wallet">Enter a valid wallet address</span>
+                  </div>
+                </div>
+
+                <div class="field-group" data-group="bank" hidden>
+                  <div class="form-field" data-field="holder">
+                    <label class="form-label" for="wdHolder">Account Holder</label>
+                    <input type="text" id="wdHolder" placeholder="Full legal name" />
+                    <span class="err-msg" data-err-for="holder">Enter the account holder name</span>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-field" data-field="bankname">
+                      <label class="form-label" for="wdBankName">Bank Name</label>
+                      <input type="text" id="wdBankName" placeholder="e.g. HSBC" />
+                      <span class="err-msg" data-err-for="bankname">Enter the bank name</span>
+                    </div>
+                    <div class="form-field" data-field="swift">
+                      <label class="form-label" for="wdSwift">SWIFT / BIC</label>
+                      <input type="text" id="wdSwift" placeholder="e.g. HSBCGB2L" />
+                      <span class="err-msg" data-err-for="swift">Enter SWIFT code</span>
+                    </div>
+                  </div>
+                  <div class="form-field" data-field="iban">
+                    <label class="form-label" for="wdIban">IBAN / Account Number</label>
+                    <input type="text" id="wdIban" placeholder="IBAN or account number" />
+                    <span class="err-msg" data-err-for="iban">Enter the IBAN</span>
+                  </div>
+                </div>
+
+                <div class="form-field">
+                  <label class="form-label" for="wdNote">Note (optional)</label>
+                  <textarea id="wdNote" placeholder="Add any context…" maxlength="240"></textarea>
+                </div>
+
+                <div class="form-submit-row">
+                  <button type="submit" class="btn btn-primary">Submit Request</button>
+                  <p class="wd-note">Withdrawals are reviewed for security.</p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="platform">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="eyebrow">The Platform</span>
+          <h2>Engineered for the <span class="gold-text">global economy</span></h2>
+          <p>Precision intelligence, borderless access, disciplined risk, absolute transparency.</p>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <div class="card-ico"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 5-7 4 4"/><path d="M3 21h18"/></svg></div>
+            <h3>Global Intelligence</h3>
+            <p>Macro signals from 190+ markets, distilled into a single live dashboard.</p>
+          </article>
+          <article class="card">
+            <div class="card-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></div>
+            <h3>Borderless Access</h3>
+            <p>Equities, bonds, commodities and digital assets — one account, every exchange.</p>
+          </article>
+          <article class="card">
+            <div class="card-ico"><svg viewBox="0 0 24 24"><path d="M12 3l7.5 3.6v5c0 4.6-3.2 8.4-7.5 9.4-4.3-1-7.5-4.8-7.5-9.4v-5z"/></svg></div>
+            <h3>Disciplined Risk</h3>
+            <p>Adaptive hedging and automated rebalancing keep exposure aligned.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="markets">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="eyebrow">The Network</span>
+          <h2>Every market orbits <span class="gold-text">one core</span></h2>
+          <p>GEI routes capital through a unified settlement core, synchronising liquidity across continents in milliseconds.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="access" style="padding-top:20px">
+      <div class="wrap">
+        <div class="final">
+          <h2>Your seat in the <span class="gold-text">global economy</span></h2>
+          <p>Open a GEI account in minutes. No minimums, no borders.</p>
+          <div class="hero-cta">
+            <button type="button" class="btn btn-primary" data-open-signup>Open Your Account</button>
+            <a href="#dashboard" class="btn btn-ghost">Go to Dashboard</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <div class="foot-inner">
+          <a href="#top" class="brand">
+            <span class="brand-mark">
+              <svg viewBox="0 0 24 24"><path fill="url(#gstar)" d="M12 1.6l2.9 6.6 7.1.7-5.3 4.8 1.5 7-6.2-3.7-6.2 3.7 1.5-7L2 8.9l7.1-.7z"/></svg>
+            </span>
+            <span class="brand-txt">
+              <span class="brand-name gold-text">GEI</span>
+              <span class="brand-sub">Global Economy Investment</span>
+            </span>
+          </a>
+          <ul class="foot-links">
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#platform">Platform</a></li>
+            <li><a href="#markets">Markets</a></li>
+            <li><a href="#access">Access</a></li>
+          </ul>
+          <span class="copy">© 2026 GEI Holdings</span>
+        </div>
+        <p class="disclaimer">Capital at risk. GEI is a fictional demonstration platform.</p>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<!-- SIGN IN MODAL -->
+<div class="modal" id="signinModal">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card">
+    <button type="button" class="modal-close" data-close-modal>✕</button>
+    <div id="signinFormView">
+      <div class="modal-head">
+        <span class="eyebrow">Welcome Back</span>
+        <h2>Sign in to <span class="gold-text">GEI</span></h2>
+        <p>Access your portfolio and global markets.</p>
+      </div>
+      <form class="form" id="signinForm" novalidate>
+        <div class="form-field" data-field="email">
+          <label class="form-label" for="siEmail">Email</label>
+          <input type="email" id="siEmail" placeholder="you@example.com" />
+          <span class="err-msg" data-err-for="email">Enter a valid email</span>
+        </div>
+        <div class="form-field" data-field="password">
+          <label class="form-label" for="siPassword">Password</label>
+          <input type="password" id="siPassword" placeholder="Your password" />
+          <span class="err-msg" data-err-for="password">Enter your password</span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Sign In</button>
+        <p class="alt-line">Don't have an account? <button type="button" data-switch-to="signup">Sign up free</button></p>
+      </form>
+    </div>
+    <div class="modal-success" id="signinSuccess">
+      <div class="s-ico"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h3>Welcome back</h3>
+      <p>Signed in successfully.</p>
+      <button type="button" class="btn btn-primary" data-close-modal style="width:100%;justify-content:center">Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN UP MODAL -->
+<div class="modal" id="signupModal">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card">
+    <button type="button" class="modal-close" data-close-modal>✕</button>
+    <div id="signupFormView">
+      <div class="modal-head">
+        <span class="eyebrow">Join GEI</span>
+        <h2>Create your <span class="gold-text">account</span></h2>
+        <p>Start investing globally in under two minutes.</p>
+      </div>
+      <form class="form" id="signupForm" novalidate>
+        <div class="form-field" data-field="fullname">
+          <label class="form-label" for="suName">Full Name</label>
+          <input type="text" id="suName" placeholder="Jordan Sterling" />
+          <span class="err-msg" data-err-for="fullname">Enter your full name</span>
+        </div>
+        <div class="form-field" data-field="email">
+          <label class="form-label" for="suEmail">Email</label>
+          <input type="email" id="suEmail" placeholder="you@example.com" />
+          <span class="err-msg" data-err-for="email">Enter a valid email</span>
+        </div>
+        <div class="form-field" data-field="password">
+          <label class="form-label" for="suPassword">Password</label>
+          <input type="password" id="suPassword" placeholder="At least 8 characters" />
+          <div class="pw-strength" id="pwStrength" data-strength="0">
+            <div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div>
+          </div>
+          <div class="pw-label" id="pwLabel">Use 8+ characters</div>
+          <span class="err-msg" data-err-for="password">Password must be at least 8 characters</span>
+        </div>
+        <div class="form-field" data-field="country">
+          <label class="form-label" for="suCountry">Country</label>
+          <select id="suCountry">
+            <option value="">Select your country…</option>
+            <option value="us">United States</option>
+            <option value="uk">United Kingdom</option>
+            <option value="ca">Canada</option>
+            <option value="ng">Nigeria</option>
+            <option value="za">South Africa</option>
+            <option value="in">India</option>
+            <option value="other">Other</option>
+          </select>
+          <span class="err-msg" data-err-for="country">Please select a country</span>
+        </div>
+        <label class="terms">
+          <input type="checkbox" id="suTerms">
+          <span class="terms-box"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <span>I agree to the Terms of Service and Privacy Policy.</span>
+        </label>
+        <span class="err-msg" id="termsErr" style="display:none;margin-top:-6px">You must accept the terms</span>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Create Account</button>
+        <p class="alt-line">Already have an account? <button type="button" data-switch-to="signin">Sign in</button></p>
+      </form>
+    </div>
+    <div class="modal-success" id="signupSuccess">
+      <div class="s-ico"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h3>Welcome to GEI</h3>
+      <p>Your account is created. Check your inbox for verification.</p>
+      <div class="s-ref" id="signupRef">REF · GEI-SU-000000</div>
+      <button type="button" class="btn btn-primary" data-close-modal style="width:100%;justify-content:center">Continue</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ═══════════ SPLASH ═══════════ */
+  var welcome = document.getElementById('welcome');
+  var main = document.getElementById('main');
+  var skipBtn = document.getElementById('skipBtn');
+  var done = false;
+  var timer = null;
+
+  function revealMain(){
+    if (done) return;
+    done = true;
+    if (welcome) welcome.classList.add('hide');
+    if (main) main.classList.add('reveal');
+    document.documentElement.style.overflow = '';
+    setTimeout(function(){
+      if (welcome && welcome.parentNode) welcome.parentNode.removeChild(welcome);
+    }, 1100);
+  }
+
+  document.documentElement.style.overflow = 'hidden';
+  timer = setTimeout(revealMain, 4000);
+  if (skipBtn) skipBtn.addEventListener('click', function(){
+    clearTimeout(timer); revealMain();
+  });
+  if (welcome) welcome.addEventListener('click', function(e){
+    if (e.target === welcome || e.target.classList.contains('welcome-card')){
+      clearTimeout(timer); revealMain();
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !done){ clearTimeout(timer); revealMain(); }
+  });
+
+  /* ═══════════ STARFIELD ═══════════ */
+  var canvas = document.getElementById('stars');
+  var ctx = canvas.getContext('2d');
+  var W = 0, H = 0, DPR = 1;
+  var stars = [];
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function makeSprite(){
+    var s = 64, c = document.createElement('canvas');
+    c.width = c.height = s;
+    var g = c.getContext('2d');
+    var grd = g.createRadialGradient(s/2, s/2, 0, s/2, s/2, s/2);
+    grd.addColorStop(0, 'rgba(255,250,225,1)');
+    grd.addColorStop(0.2, 'rgba(255,232,150,0.9)');
+    grd.addColorStop(0.5, 'rgba(212,175,55,0.3)');
+    grd.addColorStop(1, 'rgba(168,128,31,0)');
+    g.fillStyle = grd;
+    g.fillRect(0, 0, s, s);
+    return c;
+  }
+  var sprite = makeSprite();
+
+  function makeStar(){
+    var d = Math.random();
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: 0.4 + d * 1.5,
+      base: 0.2 + d * 0.6,
+      speed: 0.5 + Math.random() * 1.5,
+      phase: Math.random() * Math.PI * 2,
+      vx: (Math.random() - 0.5) * 0.05 * d,
+      vy: (0.02 + Math.random() * 0.1) * d
+    };
+  }
+
+  function buildStars(){
+    var n = Math.round(Math.min(400, Math.max(100, (W * H) / 9000)));
+    stars = [];
+    for (var i = 0; i < n; i++) stars.push(makeStar());
+  }
+
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    buildStars();
+  }
+
+  function draw(t){
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < stars.length; i++){
+      var s = stars[i];
+      if (!reduce){
+        s.x += s.vx;
+        s.y += s.vy;
+        if (s.y - s.r > H + 4){ s.y = -6; s.x = Math.random() * W; }
+        if (s.x > W + 6) s.x = -6;
+        if (s.x < -6) s.x = W + 6;
+      }
+      var twinkle = 0.55 + 0.45 * Math.sin(t * 0.001 * s.speed + s.phase);
+      var a = s.base * twinkle;
+      var d = s.r * 5.2;
+      ctx.globalAlpha = a * 0.9;
+      ctx.drawImage(sprite, s.x - d/2, s.y - d/2, d, d);
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(draw);
+
+  /* ═══════════ NAV SCROLL ═══════════ */
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function(){
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  /* ═══════════ MENU ═══════════ */
+  var menuToggle = document.getElementById('menuToggle');
+  var menuOpen = false;
+
+  menuToggle.addEventListener('click', function(){
+    menuOpen = !menuOpen;
+    document.body.classList.toggle('menu-open', menuOpen);
+  });
+
+  document.querySelectorAll('.menu-overlay a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menuOpen = false;
+      document.body.classList.remove('menu-open');
+    });
+  });
+
+  /* ═══════════ DASHBOARD TABS ═══════════ */
+  var tabs = document.querySelectorAll('.dash-tab');
+  var panels = document.querySelectorAll('.dash-panel');
+
+  function showTab(name){
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.tab === name); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.dataset.panel === name); });
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ showTab(t.dataset.tab); });
+  });
+  document.querySelectorAll('[data-open-tab="withdraw"]').forEach(function(el){
+    el.addEventListener('click', function(){
+      showTab('withdraw');
+      setTimeout(function(){
+        document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
+      }, 100);
+    });
+  });
+
+  /* ═══════════ MODALS ═══════════ */
+  var signinModal = document.getElementById('signinModal');
+  var signupModal = document.getElementById('signupModal');
+
+  function openModal(m){
+    if (!m) return;
+    if (menuOpen){ menuOpen = false; document.body.classList.remove('menu-open'); }
+    var fv = m.querySelector('[id$="FormView"]');
+    var sv = m.querySelector('[id$="Success"]');
+    var f = m.querySelector('form');
+    if (fv) fv.style.display = '';
+    if (sv) sv.classList.remove('show');
+    if (f){
+      f.reset();
+      f.querySelectorAll('.form-field.error').forEach(function(el){ el.classList.remove('error'); });
+    }
+    var pws = m.querySelector('.pw-strength');
+    if (pws) pws.dataset.strength = '0';
+    var pwl = m.querySelector('.pw-label');
+    if (pwl) pwl.textContent = 'Use 8+ characters';
+    var te = m.querySelector('#termsErr');
+    if (te) te.style.display = 'none';
+    m.classList.add('open');
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  function closeModal(m){
+    if (!m) return;
+    m.classList.remove('open');
+    if (!document.querySelector('.modal.open')){
+      document.documentElement.style.overflow = '';
+    }
+  }
+
+  document.querySelectorAll('[data-open-signup]').forEach(function(b){
+    b.addEventListener('click', function(e){ e.preventDefault(); openModal(signupModal); });
+  });
+  document.querySelectorAll('[data-open-signin]').forEach(function(b){
+    b.addEventListener('click', function(e){ e.preventDefault(); openModal(signinModal); });
+  });
+  document.querySelectorAll('[data-close-modal]').forEach(function(el){
+    el.addEventListener('click', function(){ closeModal(el.closest('.modal')); });
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){
+      var o = document.querySelector('.modal.open');
+      if (o) closeModal(o);
+    }
+  });
+  document.querySelectorAll('[data-switch-to]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var target = b.dataset.switchTo;
+      var cur = b.closest('.modal');
+      closeModal(cur);
+      setTimeout(function(){
+        openModal(target === 'signin' ? signinModal : signupModal);
+      }, 200);
+    });
+  });
+
+  /* ═══════════ USER STATE ═══════════ */
+  var userChip = document.getElementById('userChip');
+  var userName = document.getElementById('userName');
+  var userAvatar = document.getElementById('userAvatar');
+  var logoutBtn = document.getElementById('logoutBtn');
+  var navSignin = document.querySelector('.nav-signin');
+  var navCta = document.querySelector('.nav-cta');
+
+  function setSignedIn(name){
+    var display = name ? name.charAt(0).toUpperCase() + name.slice(1) : 'Member';
+    if (userName) userName.textContent = display;
+    if (userAvatar) userAvatar.textContent = display.charAt(0).toUpperCase();
+    if (userChip) userChip.classList.add('on');
+    if (navSignin) navSignin.style.display = 'none';
+    if (navCta) navCta.style.display = 'none';
+  }
+  function setSignedOut(){
+    if (userChip) userChip.classList.remove('on');
+    if (navSignin) navSignin.style.display = '';
+    if (navCta) navCta.style.display = '';
+  }
+  if (logoutBtn) logoutBtn.addEventListener('click', setSignedOut);
+
+  /* ═══════════ SIGN IN FORM ═══════════ */
+  var signinForm = document.getElementById('signinForm');
+  signinForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var email = document.getElementById('siEmail');
+    var pass = document.getElementById('siPassword');
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var ok = true;
+
+    signinForm.querySelectorAll('.form-field.error').forEach(function(el){ el.classList.remove('error'); });
+
+    if (!re.test(email.value.trim())){
+      email.closest('.form-field').classList.add('error');
+      ok = false;
+    }
+    if (pass.value.length < 1){
+      pass.closest('.form-field').classList.add('error');
+      ok = false;
+    }
+    if (!ok) return;
+
+    setSignedIn(email.value.split('@')[0]);
+    document.getElementById('signinFormView').style.display = 'none';
+    document.getElementById('signinSuccess').classList.add('show');
+  });
+  signinForm.querySelectorAll('input').forEach(function(el){
+    el.addEventListener('input', function(){
+      var w = el.closest('.form-field');
+      if (w) w.classList.remove('error');
+    });
+  });
+
+  /* ═══════════ SIGN UP FORM ═══════════ */
+  var signupForm = document.getElementById('signupForm');
+  var pwInput = document.getElementById('suPassword');
+  var pwStrength = document.getElementById('pwStrength');
+  var pwLabel = document.getElementById('pwLabel');
+  var termsCheck = document.getElementById('suTerms');
+  var termsErr = document.getElementById('termsErr');
+
+  function scorePassword(v){
+    var s = 0;
+    if (v.length >= 8) s++;
+    if (/[A-Z]/.test(v) && /[a-z]/.test(v)) s++;
+    if (/\d/.test(v)) s++;
+    if (/[^A-Za-z0-9]/.test(v)) s++;
+    return v.length === 0 ? 0 : Math.max(1, s);
+  }
+  var pwText = ['Use 8+ characters', 'Weak', 'Fair', 'Good', 'Strong'];
+
+  pwInput.addEventListener('input', function(){
+    var s = scorePassword(pwInput.value);
+    pwStrength.dataset.strength = String(s);
+    pwLabel.textContent = pwText[s] || pwText[0];
+  });
+
+  signupForm.querySelectorAll('input, select').forEach(function(el){
+    el.addEventListener('input', function(){
+      var w = el.closest('.form-field');
+      if (w) w.classList.remove('error');
+    });
+    el.addEventListener('change', function(){
+      var w = el.closest('.form-field');
+      if (w) w.classList.remove('error');
+      if (el === termsCheck && termsErr) termsErr.style.display = 'none';
+    });
+  });
+
+  signupForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    signupForm.querySelectorAll('.form-field.error').forEach(function(el){ el.classList.remove('error'); });
+    if (termsErr) termsErr.style.display = 'none';
+
+    var name = document.getElementById('suName');
+    var email = document.getElementById('suEmail');
+    var country = document.getElementById('suCountry');
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var ok = true;
+
+    if (name.value.trim().length < 2){ name.closest('.form-field').classList.add('error'); ok = false; }
+    if (!re.test(email.value.trim())){ email.closest('.form-field').classList.add('error'); ok = false; }
+    if (pwInput.value.length < 8){ pwInput.closest('.form-field').classList.add('error'); ok = false; }
+    if (!country.value){ country.closest('.form-field').classList.add('error'); ok = false; }
+    if (!termsCheck.checked){ if (termsErr) termsErr.style.display = 'block'; ok = false; }
+    if (!ok) return;
+
+    var ref = 'GEI-SU-' + Math.floor(100000 + Math.random() * 899999);
+    document.getElementById('signupRef').textContent = 'REF · ' + ref;
+    setSignedIn(name.value.trim().split(' ')[0]);
+
+    document.getElementById('signupFormView').style.display = 'none';
+    document.getElementById('signupSuccess').classList.add('show');
+  });
+
+  /* ═══════════ WITHDRAWAL FORM ═══════════ */
+  var form = document.getElementById('wdForm');
+  var successBox = document.getElementById('wdSuccess');
+  var amountInput = document.getElementById('wdAmount');
+  var amountWrap = document.getElementById('amountWrap');
+  var maxBtn = document.getElementById('maxBtn');
+  var AVAILABLE = 52180;
+  var MIN_AMOUNT = 50;
+
+  function currentMethod(){
+    var c = form.querySelector('input[name="wdMethod"]:checked');
+    return c ? c.value : 'crypto';
+  }
+
+  function syncGroups(){
+    var m = currentMethod();
+    document.querySelectorAll('.field-group').forEach(function(g){
+      g.hidden = g.dataset.group !== m;
+    });
+  }
+
+  form.querySelectorAll('input[name="wdMethod"]').forEach(function(r){
+    r.addEventListener('change', syncGroups);
+  });
+  syncGroups();
+
+  amountInput.addEventListener('focus', function(){
+    maxBtn.style.display = 'inline-flex';
+    amountWrap.classList.add('has-max');
+  });
+  amountInput.addEventListener('blur', function(){
+    setTimeout(function(){
+      if (document.activeElement !== maxBtn){
+        maxBtn.style.display = 'none';
+        amountWrap.classList.remove('has-max');
+      }
+    }, 140);
+  });
+  maxBtn.addEventListener('mousedown', function(e){ e.preventDefault(); });
+  maxBtn.addEventListener('click', function(){
+    amountInput.value = AVAILABLE.toFixed(2);
+    var w = amountInput.closest('.form-field');
+    if (w) w.classList.remove('error');
+    amountInput.focus();
+  });
+
+  function setError(field){
+    var wrap = form.querySelector('.form-field[data-field="' + field + '"]');
+    if (wrap) wrap.classList.add('error');
+  }
+
+  form.querySelectorAll('input, select, textarea').forEach(function(el){
+    el.addEventListener('input', function(){
+      var w = el.closest('.form-field');
+      if (w) w.classList.remove('error');
+    });
+    el.addEventListener('change', function(){
+      var w = el.closest('.form-field');
+      if (w) w.classList.remove('error');
+    });
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    form.querySelectorAll('.form-field.error').forEach(function(el){ el.classList.remove('error'); });
+    var ok = true;
+
+    var raw = amountInput.value.trim();
+    var amt = parseFloat(raw);
+    if (!raw || isNaN(amt) || amt < MIN_AMOUNT || amt > AVAILABLE){
+      setError('amount'); ok = false;
+    }
+
+    var m = currentMethod();
+    if (m === 'crypto'){
+      if (!document.getElementById('wdNetwork').value){ setError('network'); ok = false; }
+      if (document.getElementById('wdWallet').value.trim().length < 8){ setError('wallet'); ok = false; }
+    } else {
+      if (document.getElementById('wdHolder').value.trim().length < 2){ setError('holder'); ok = false; }
+      if (document.getElementById('wdBankName').value.trim().length < 2){ setError('bankname'); ok = false; }
+      if (document.getElementById('wdSwift').value.trim().length < 5){ setError('swift'); ok = false; }
+      if (document.getElementById('wdIban').value.trim().length < 6){ setError('iban'); ok = false; }
+    }
+    if (!ok) return;
+
+    var ref = 'GEI-WD-' + Math.floor(100000 + Math.random() * 899999);
+    document.getElementById('wdRef').textContent = 'REF · ' + ref;
+    form.style.display = 'none';
+    successBox.classList.add('show');
+  });
+
+})();
+</script>
+
+<script type="text/javascript">
+  window.ORKA_APP_ID = "6aadd8ea40527a4346acf41e";
+  (function () {
+    var d = document, s = d.createElement("script");
+    s.src = "//widget.orka.chat/app.js";
+    s.async = 1;
+    d.getElementsByTagName("head")[0].appendChild(s);
+  })();
+</script>
+
+</body>
+</<html></html>
